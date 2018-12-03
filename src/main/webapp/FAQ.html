@@ -1,0 +1,700 @@
+ <!DOCTYPE html>
+<style>
+/* -------------------------------- 
+Primary style
+-------------------------------- */
+*, *::after, *::before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+*::after, *::before {
+  content: '';
+}
+
+body {
+  font-size: 100%;
+  font-family: "Open Sans", sans-serif;
+  /*
+  color: #4e5359;
+  */
+  color: #FFD700;
+  background-color: #000000;
+}
+body::after {
+  /* overlay layer visible on small devices when the right panel slides in */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(78, 83, 89, 0.8);
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: opacity .3s 0s, visibility 0s .3s;
+  -moz-transition: opacity .3s 0s, visibility 0s .3s;
+  transition: opacity .3s 0s, visibility 0s .3s;
+}
+body.cd-overlay::after {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity .3s 0s, visibility 0s 0s;
+  -moz-transition: opacity .3s 0s, visibility 0s 0s;
+  transition: opacity .3s 0s, visibility 0s 0s;
+}
+@media only screen and (min-width: 768px) {
+  body::after {
+    display: none;
+  }
+}
+
+a {
+  /*
+  color: #a9c056;
+  */
+  color: #FFD700;
+  text-decoration: none;
+}
+
+/* -------------------------------- 
+Main components 
+-------------------------------- */
+header {
+  position: relative;
+  height: 180px;
+  line-height: 180px;
+  text-align: center;
+  background-color: #000000;
+}
+header h1 {
+  color: ##FFD700;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 20px;
+  font-size: 1.25rem;
+}
+@media only screen and (min-width: 1024px) {
+  header {
+    height: 240px;
+    line-height: 240px;
+  }
+  header h1 {
+    font-size: 36px;
+    font-size: 2.25rem;
+    font-weight: 300;
+  }
+}
+
+.cd-faq {
+  width: 90%;
+  max-width: 1024px;
+  margin: 2em auto;
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+.cd-faq:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq {
+    position: relative;
+    margin: 4em auto;
+    box-shadow: none;
+  }
+}
+
+.cd-faq-categories a {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  height: 50px;
+  line-height: 50px;
+  padding: 0 28px 0 16px;
+  background-color: #000000;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #FFD700;
+  white-space: nowrap;
+  border-bottom: 1px solid #555b61;
+  text-overflow: ellipsis;
+}
+.cd-faq-categories a::before, .cd-faq-categories a::after {
+  /* plus icon on the right */
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  display: inline-block;
+  height: 1px;
+  width: 10px;
+  background-color: #7f868e;
+}
+.cd-faq-categories a::after {
+  -webkit-transform: rotate(90deg);
+  -moz-transform: rotate(90deg);
+  -ms-transform: rotate(90deg);
+  -o-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+.cd-faq-categories li:last-child a {
+  border-bottom: none;
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq-categories {
+    width: 20%;
+    float: left;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  }
+  .cd-faq-categories a {
+    font-size: 13px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    padding-left: 24px;
+    padding: 0 24px;
+    -webkit-transition: background 0.2s, padding 0.2s;
+    -moz-transition: background 0.2s, padding 0.2s;
+    transition: background 0.2s, padding 0.2s;
+  }
+  .cd-faq-categories a::before, .cd-faq-categories a::after {
+    display: none;
+  }
+  .no-touch .cd-faq-categories a:hover {
+    background: #000000;
+  }
+  .no-js .cd-faq-categories {
+    width: 100%;
+    margin-bottom: 2em;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .cd-faq-categories {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    z-index: 2;
+  }
+  .cd-faq-categories a::before {
+    /* decorative rectangle on the left visible for the selected item */
+    display: block;
+    top: 0;
+    right: auto;
+    left: 0;
+    height: 100%;
+    width: 3px;
+    background-color: #000000;
+    opacity: 0;
+    -webkit-transition: opacity 0.2s;
+    -moz-transition: opacity 0.2s;
+    transition: opacity 0.2s;
+  }
+  .cd-faq-categories .selected {
+    background: #42464b !important;
+    /*#42464b*/
+  }
+  .cd-faq-categories .selected::before {
+    opacity: 1;
+  }
+  .cd-faq-categories.is-fixed {
+    /* top and left value assigned in jQuery */
+    position: fixed;
+  }
+  .no-js .cd-faq-categories {
+    position: relative;
+  }
+}
+
+.cd-faq-items {
+  position: fixed;
+  height: 100%;
+  width: 90%;
+  top: 0;
+  right: 0;
+  background: #000000;
+  padding: 0 5% 1em;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 1;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0) translateX(100%);
+  -moz-transform: translateZ(0) translateX(100%);
+  -ms-transform: translateZ(0) translateX(100%);
+  -o-transform: translateZ(0) translateX(100%);
+  transform: translateZ(0) translateX(100%);
+  -webkit-transition: -webkit-transform .3s;
+  -moz-transition: -moz-transform .3s;
+  transition: transform .3s;
+}
+.cd-faq-items.slide-in {
+  -webkit-transform: translateZ(0) translateX(0%);
+  -moz-transform: translateZ(0) translateX(0%);
+  -ms-transform: translateZ(0) translateX(0%);
+  -o-transform: translateZ(0) translateX(0%);
+  transform: translateZ(0) translateX(0%);
+}
+.no-js .cd-faq-items {
+  position: static;
+  height: auto;
+  width: 100%;
+  -webkit-transform: translateX(0);
+  -moz-transform: translateX(0);
+  -ms-transform: translateX(0);
+  -o-transform: translateX(0);
+  transform: translateX(0);
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq-items {
+    position: static;
+    height: auto;
+    width: 78%;
+    float: right;
+    overflow: visible;
+    -webkit-transform: translateZ(0) translateX(0);
+    -moz-transform: translateZ(0) translateX(0);
+    -ms-transform: translateZ(0) translateX(0);
+    -o-transform: translateZ(0) translateX(0);
+    transform: translateZ(0) translateX(0);
+    padding: 0;
+    background: transparent;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .cd-faq-items {
+    float: none;
+    width: 100%;
+    padding-left: 220px;
+  }
+  .no-js .cd-faq-items {
+    padding-left: 0;
+  }
+}
+
+.cd-close-panel {
+  position: fixed;
+  top: 5px;
+  right: -100%;
+  display: block;
+  height: 40px;
+  width: 40px;
+  overflow: hidden;
+  text-indent: 100%;
+  white-space: nowrap;
+  z-index: 2;
+  /* Force Hardware Acceleration in WebKit */
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transition: right 0.4s;
+  -moz-transition: right 0.4s;
+  transition: right 0.4s;
+}
+.cd-close-panel::before, .cd-close-panel::after {
+  /* close icon in CSS */
+  position: absolute;
+  top: 16px;
+  left: 12px;
+  display: inline-block;
+  height: 3px;
+  width: 18px;
+  background: #6c7d8e;
+}
+.cd-close-panel::before {
+  -webkit-transform: rotate(45deg);
+  -moz-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  -o-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+.cd-close-panel::after {
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+.cd-close-panel.move-left {
+  right: 2%;
+}
+@media only screen and (min-width: 768px) {
+  .cd-close-panel {
+    display: none;
+  }
+}
+
+.cd-faq-group {
+  /* hide group not selected */
+  display: none;
+}
+.cd-faq-group.selected {
+  display: block;
+}
+.cd-faq-group .cd-faq-title {
+  background: transparent;
+  box-shadow: none;
+  margin: 1em 0;
+}
+.no-touch .cd-faq-group .cd-faq-title:hover {
+  box-shadow: none;
+}
+.cd-faq-group .cd-faq-title h2 {
+  text-transform: uppercase;
+  font-size: 12px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #FFD700;
+}
+.no-js .cd-faq-group {
+  display: block;
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq-group {
+    /* all groups visible */
+    display: block;
+  }
+  .cd-faq-group > li {
+    background: #FFFFFF;
+    margin-bottom: 6px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+    -webkit-transition: box-shadow 0.2s;
+    -moz-transition: box-shadow 0.2s;
+    transition: box-shadow 0.2s;
+  }
+  .no-touch .cd-faq-group > li:hover {
+    box-shadow: 0 1px 10px rgba(108, 125, 142, 0.3);
+  }
+  .cd-faq-group .cd-faq-title {
+    margin: 2em 0 1em;
+  }
+  .cd-faq-group:first-child .cd-faq-title {
+    margin-top: 0;
+  }
+}
+
+.cd-faq-trigger {
+  position: relative;
+  display: block;
+  margin: 1.6em 0 .4em;
+  line-height: 1.2;
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq-trigger {
+    font-size: 24px;
+    font-size: 1.5rem;
+    font-weight: 300;
+    margin: 0;
+    padding: 24px 72px 24px 24px;
+  }
+  .cd-faq-trigger::before, .cd-faq-trigger::after {
+    /* arrow icon on the right */
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    height: 2px;
+    width: 13px;
+    background: #cfdca0;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-transition-property: -webkit-transform;
+    -moz-transition-property: -moz-transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.2s;
+    -moz-transition-duration: 0.2s;
+    transition-duration: 0.2s;
+  }
+  .cd-faq-trigger::before {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    right: 32px;
+  }
+  .cd-faq-trigger::after {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  .content-visible .cd-faq-trigger::before {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg);
+  }
+  .content-visible .cd-faq-trigger::after {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+  }
+}
+
+.cd-faq-content p {
+  font-size: 14px;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  color: #000000;
+}
+@media only screen and (min-width: 768px) {
+  .cd-faq-content {
+    display: none;
+    padding: 0 24px 30px;
+  }
+  .cd-faq-content p {
+    line-height: 1.6;
+  }
+  .no-js .cd-faq-content {
+    display: block;
+  }
+}
+</style>
+
+<html lang="en" class="no-js">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="css/reset.css"> <!-- CSS reset -->
+  <link rel="stylesheet" href="css/style.css"> <!-- Resource style -->
+  <script src="js/modernizr.js"></script> <!-- Modernizr -->
+  <title>FAQ</title>
+  <img src="talented10thlogo.png"/>
+</head>
+<body background="Black-yellow-marble-backgrounds.jpg">
+
+<header>
+ 
+  <h1>FAQ </h1>
+</header>
+
+<section class="cd-faq">
+  <ul class="cd-faq-categories">
+    <li><a class="selected" href="#basics">About Us</a></li>
+    <li><a href="#mobile">Our Matching Process</a></li>
+    <li><a href="#account">Account</a></li>
+    <li><a href="#payments">Payment</a></li>
+    <li><a href="#privacy">Reporting Users</a></li>
+    <li><a href="#delivery">Getting Started</a></li>
+  </ul> <!-- cd-faq-categories -->
+
+  <div class="cd-faq-items">
+    <ul id="basics" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>About Us</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">Why TalentedTenthMeet?</a>
+        <div class="cd-faq-content">
+          <p>We saw the disappointment in black professionals not finding someone of their financial status that they can find a deeper connection with.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">Why sign up?</a>
+        <div class="cd-faq-content">
+          <p>If you are an African American who makes over $100,000 a month and wants someone who shares your morals, values, personality and financial wealth then this is the site for you!</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How successful is TalentedTenthMeet?</a>
+        <div class="cd-faq-content">
+          <p>As of November 2018 TalentedTenthMeet has a 90% success rate.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I accept or decline a match?</a>
+        <div class="cd-faq-content">
+          <p>We are not Tinder so no swipping here! Your matches will be displayed in your news feed and if you would like to see new matches simply hit refresh at the top of your feed.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+    </ul> <!-- cd-faq-group -->
+
+    <ul id="mobile" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>Our Matching Proccess</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">How does the matching process work?</a>
+        <div class="cd-faq-content">
+          <p>Our site uses the Myers Briggs Personality Test questions to generate your personality type. Upon receiving your personality, we will match you with indiviiduals that meet the three compatible personalities of your type that also have the qualities that you are looking for based on your surveys.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How does contacting other users work?</a>
+        <div class="cd-faq-content">
+          <p>Unlike like other dating sites, we are not a social media platform. Therefore, we do not allow for messaging on our site. However, we do list contact information for each user per their preferences for you to contact them yourself.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I link to a file or folder?</a>
+        <div class="cd-faq-content">
+          <p>In your profile settings you are able to place any other appropriate information you would like other users to know under the section "Additional Info".</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+    </ul> <!-- cd-faq-group -->
+
+    <ul id="account" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>Account</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I change my password?</a>
+        <div class="cd-faq-content">
+          <p>You can change your password in account settings which is found in the drop down menu of your profile picture to the right. Once inside account settings, select password where you will enter your current password and become prompted to type your desired new password.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I delete my account?</a>
+        <div class="cd-faq-content">
+          <p>We would hate for anyone to delete their account - unless they are happily in a relationship! However, if you would like to delete your account. The "delete account" action/button can be found in the dropdown of your profile picture in profile settings.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I change my account settings?</a>
+        <div class="cd-faq-content">
+          <p>You can change your account settings by selecting your profile picture to display a dropdown menu that says account settings.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">I forgot my password. How do I reset it?</a>
+        <div class="cd-faq-content">
+          <p>Upon reaching our login screen you can select "Forgot Password?" where you can enter your email you registered your account with to recieve a link to reset your password.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+    </ul> <!-- cd-faq-group -->
+
+    <ul id="payments" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>Payment</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">Can I have an invoice for my subscription?</a>
+        <div class="cd-faq-content">
+          <p>If you would like an invoice, you can see access it by clicking on your profile picture and selecting "account settings". In "account settings" select "payment" there you will see your payment history and upcoming charges.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">Why did my credit card or PayPal payment fail?</a>
+        <div class="cd-faq-content">
+          <p>Your payment could have failed due to a server error on our part, inaccurate card information or insufficient funds.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">Why does my bank statement show multiple charges for one upgrade?</a>
+        <div class="cd-faq-content">
+          <p>We are happy that you want more features on our site! If you selected one of larger upgrade packages, it could be that PayPal broke the package up by the features purchaed under the same name.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+    </ul> <!-- cd-faq-group -->
+
+    <ul id="privacy" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>Reporting Users</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">What happens if a user on TalentedTenthMeet becomes inappropriate in communication with me?</a>
+        <div class="cd-faq-content">
+          <p>We ask that if at any time you are uncomfortable with a match that you please report them using our "Report User" button on your news feed.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">I have an existing restraining order (prior to using TalentedTenthMeet) against one of my matches. What do I do?</a>
+        <div class="cd-faq-content">
+          <p>In the event that you have legal ramifications with one of your matches please contact our office at 202-569-9604.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">I am not interested in one of my matches and have told them this but they still keep contacting me.</a>
+        <div class="cd-faq-content">
+          <p>We hope that this does not happen, but in the event that it does, we suggest that you change your accessibilty (blocking phone number, reporting user on our site, change privacy settings on all social media, blocking email address...) and also please contact our office at 202-569-9604.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">What if I don't like one of my matches?</a>
+        <div class="cd-faq-content">
+          <p>We hope this does not happen, but in the event that it does, please explore the other mathces provided for you and you can always refresh your matches.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+    </ul> <!-- cd-faq-group -->
+
+    <ul id="delivery" class="cd-faq-group">
+      <li class="cd-faq-title"><h2>Getting Started</h2></li>
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I start?</a>
+        <div class="cd-faq-content">
+          <p>We are glad you are here! Upon landing on our page, select sign up and fill in your information. Once you have created a profile, you will be prompted to respond to our surveys for your personality, your financial status, physique and preferences.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">What is the Personality Survey?</a>
+        <div class="cd-faq-content">
+          <p>The personality survey - adopted from the Myers Briggs Personality Test is used to generate your personality type in order to determine your compatible personality types.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">What is the Financial Survey?</a>
+        <div class="cd-faq-content">
+          <p>Our site is designed with the wealthy in mind. Therefore, we want to be sure our users can handle adding our service. We also want to determine your mindset on finances so that you can be paired properly with our users.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">What is the Physique Survey?</a>
+        <div class="cd-faq-content">
+          <p>We want users to get to know you and to see if they woulod be physically attracted to you.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I access my news feed?</a>
+        <div class="cd-faq-content">
+          <p>Upon becoming a certified user, and logging in the page the page will be your news feed.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I find my matches?</a>
+        <div class="cd-faq-content">
+          <p>You matches are displayed on your news feed.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">When will I see my matches?</a>
+        <div class="cd-faq-content">
+          <p>Your matches will appear instantly on your news feed.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+      <li>
+        <a class="cd-faq-trigger" href="#0">How do I contact my matches?</a>
+        <div class="cd-faq-content">
+          <p>We do not have a feature to contact your matches, as we specialize in finding the matches for you and not so much connecting you to them.</p>
+        </div> <!-- cd-faq-content -->
+      </li>
+
+     
+    </ul> <!-- cd-faq-group -->
+  </div> <!-- cd-faq-items -->
+  <a href="#0" class="cd-close-panel">Close</a>
+</section> <!-- cd-faq -->
+<script src="js/jquery-2.1.1.js"></script>
+<script src="js/jquery.mobile.custom.min.js"></script>
+<script src="js/main.js"></script> <!-- Resource jQuery -->
+</body>
+</html>
